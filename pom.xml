@@ -6,7 +6,8 @@
 		<module>spring-admin-client</module>
 		<module>spring-admin-server</module>
 		<module>spring-admin-eureka</module>
-	</modules>
+        <module>spring-cache-manager</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
