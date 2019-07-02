@@ -7,8 +7,8 @@
 		<module>spring-admin-server</module>
 		<module>spring-admin-eureka</module>
         <module>spring-cache-manager</module>
-		<module>spring-logger</module>
 		<module>spring-cloud</module>
+		<module>consumer-parent</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
