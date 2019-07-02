@@ -8,6 +8,7 @@
 		<module>spring-admin-eureka</module>
         <module>spring-cache-manager</module>
 		<module>spring-logger</module>
+		<module>spring-cloud</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
