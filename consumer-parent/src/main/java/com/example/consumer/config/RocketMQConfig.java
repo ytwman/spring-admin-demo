@@ -1,4 +1,4 @@
-package com.example.consumer;
+package com.example.consumer.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,21 +8,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("spring.rocketmq")
 public class RocketMQConfig {
 
-    private String groupId;
-
     private String namesrvAddr;
 
     private String accessKeyId;
 
     private String accessKeySecret;
 
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+    private Client client;
 
     public String getNamesrvAddr() {
         return namesrvAddr;
@@ -46,5 +38,34 @@ public class RocketMQConfig {
 
     public void setAccessKeySecret(String accessKeySecret) {
         this.accessKeySecret = accessKeySecret;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public class Client {
+        private String groupId;
+        private Integer consumeThreadNums;
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
+
+        public Integer getConsumeThreadNums() {
+            return consumeThreadNums;
+        }
+
+        public void setConsumeThreadNums(Integer consumeThreadNums) {
+            this.consumeThreadNums = consumeThreadNums;
+        }
     }
 }
