@@ -29,6 +29,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+
         <!-- netflix 全家桶 -->
         <!-- 注册中心 -->
         <dependency>

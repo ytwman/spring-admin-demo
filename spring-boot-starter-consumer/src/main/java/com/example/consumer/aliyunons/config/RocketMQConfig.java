@@ -1,5 +1,6 @@
 package com.example.consumer.aliyunons.config;
 
+import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.log.ClientLogger;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -10,11 +11,40 @@ public class RocketMQConfig {
 
     private String namesrvAddr;
 
+    /**
+     * aliyun 平台访问 key
+     */
     private String accessKeyId;
 
+    /**
+     * 阿里云平台访问 秘钥
+     */
     private String accessKeySecret;
 
+    /**
+     * topic 后缀，用于区分不同的环境后缀
+     */
+    private String topicSuffix;
+
+    /**
+     * group id 后缀，用于区分不同环境的后缀
+     */
+    private String groupSuffix;
+
+    /**
+     * 环境后缀
+     */
+    private String envSuffix;
+
+    /**
+     * 客户端参数
+     */
     private Client client;
+
+    // 配置日志
+    static {
+        System.setProperty(ClientLogger.CLIENT_LOG_USESLF4J, "true");
+    }
 
     public String getNamesrvAddr() {
         return namesrvAddr;
@@ -40,6 +70,30 @@ public class RocketMQConfig {
         this.accessKeySecret = accessKeySecret;
     }
 
+    public String getTopicSuffix() {
+        return topicSuffix;
+    }
+
+    public void setTopicSuffix(String topicSuffix) {
+        this.topicSuffix = topicSuffix;
+    }
+
+    public String getGroupSuffix() {
+        return groupSuffix;
+    }
+
+    public void setGroupSuffix(String groupSuffix) {
+        this.groupSuffix = groupSuffix;
+    }
+
+    public String getEnvSuffix() {
+        return envSuffix;
+    }
+
+    public void setEnvSuffix(String envSuffix) {
+        this.envSuffix = envSuffix;
+    }
+
     public Client getClient() {
         return client;
     }
@@ -49,8 +103,14 @@ public class RocketMQConfig {
     }
 
     public class Client {
+        /**
+         * 客户端 id
+         */
         private String groupId;
-        private Integer consumeThreadNums;
+        /**
+         * 消费线程数量
+         */
+        private Integer consumeThreadNums = 10;
 
         public String getGroupId() {
             return groupId;

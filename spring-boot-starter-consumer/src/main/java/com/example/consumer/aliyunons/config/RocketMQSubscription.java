@@ -18,6 +18,7 @@ import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author hank (hank@meiyibao.com)
@@ -33,7 +34,7 @@ public class RocketMQSubscription implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public Map<Subscription, com.aliyun.openservices.ons.api.MessageListener> getSubscriptionTable() {
+    public Map<Subscription, com.aliyun.openservices.ons.api.MessageListener> getSubscriptionTable(RocketMQConfig config) {
         Map<Subscription, com.aliyun.openservices.ons.api.MessageListener> subscriptions = new HashMap<>();
 
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(Consumer.class);
@@ -58,13 +59,18 @@ public class RocketMQSubscription implements ApplicationContextAware {
                         messageEvent.setMessage(message);
                         listener.consume(messageEvent);
                     } catch (Exception e) {
-                        log.error("message send failure, message id:{}, biz id: {}, topic: {}", message.getMsgID(), message.getKey(), topic.value(), e);
+                        log.error("receiver message process failure, message id:{}, biz id: {}, topic: {}", message.getMsgID(), message.getKey(), topic.value(), e);
                         return Action.ReconsumeLater;
                     }
                     return Action.CommitMessage;
                 };
 
-                subscriptions.put(asSubscription(consumer, topic.value()), messageListener);
+                // 拼装环境区分后缀
+                String topicName = Objects.nonNull(config.getTopicSuffix())
+                        ? topic.value().join(config.getTopicSuffix())
+                        : (Objects.nonNull(config.getEnvSuffix()) ? topic.value().join(config.getEnvSuffix()) : topic.value());
+
+                subscriptions.put(asSubscription(consumer, topicName), messageListener);
                 log.info("message listener: {}, subscription topic: {}, tag: {}.", listener.getClass().getName(), topic.value(), consumer.tag());
             }
         }
@@ -75,7 +81,7 @@ public class RocketMQSubscription implements ApplicationContextAware {
     private Subscription asSubscription(Consumer consumer, String topic) {
         Subscription subscription = new Subscription();
         subscription.setTopic(topic);
-        subscription.setTopic(consumer.value().equals("") ? consumer.tag() : consumer.value());
+        subscription.setTopic(consumer.value().isEmpty() ? consumer.tag() : consumer.value());
         subscription.setType(ExpressionType.TAG);
         subscription.setExpression("*");
         return subscription;

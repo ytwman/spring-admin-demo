@@ -1,11 +1,9 @@
 package com.example.consumer.aliyunons.config;
 
 import com.aliyun.openservices.ons.api.*;
-import com.aliyun.openservices.ons.api.MessageListener;
 import com.aliyun.openservices.ons.api.bean.*;
 import com.aliyun.openservices.ons.api.order.OrderProducer;
 import com.aliyun.openservices.ons.api.transaction.TransactionProducer;
-import com.aliyun.openservices.shade.com.alibaba.rocketmq.client.log.ClientLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -52,12 +50,17 @@ public class RocketMQConfiguration {
     public Consumer getConsumer(RocketMQConfig config, RocketMQSubscription subscription) {
         ConsumerBean bean = new ConsumerBean();
         bean.setProperties(asProperties(config));
-        // 指定客户端的 groupid
-        bean.getProperties().putIfAbsent(PropertyKeyConst.GROUP_ID, config.getClient().getGroupId());
+        // 指定客户端的 groupid, 拼装环境区分后缀
+        String groupId = Objects.nonNull(config.getGroupSuffix())
+                ? config.getClient().getGroupId().join(config.getGroupSuffix())
+                : (Objects.nonNull(config.getEnvSuffix())
+                    ? config.getClient().getGroupId().join(config.getEnvSuffix()) : config.getClient().getGroupId());
+        bean.getProperties().putIfAbsent(PropertyKeyConst.GROUP_ID, groupId);
+
         if (config.getClient().getConsumeThreadNums() != null) {
             bean.getProperties().putIfAbsent(PropertyKeyConst.ConsumeThreadNums, config.getClient().getConsumeThreadNums());
         }
-        Map<Subscription, MessageListener> subscriptionTable = subscription.getSubscriptionTable();
+        Map<Subscription, MessageListener> subscriptionTable = subscription.getSubscriptionTable(config);
         if (!subscriptionTable.isEmpty()) {
             log.warn("client GroupId:{}, not found message listener.", config.getClient().getGroupId());
             bean.setSubscriptionTable(subscriptionTable);
@@ -66,9 +69,6 @@ public class RocketMQConfiguration {
     }
 
     private Properties asProperties(RocketMQConfig config) {
-        // 配置日志
-        System.setProperty(ClientLogger.CLIENT_LOG_USESLF4J, "true");
-
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.SecretKey, config.getAccessKeySecret());
         properties.put(PropertyKeyConst.AccessKey, config.getAccessKeyId());
