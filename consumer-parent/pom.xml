@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>consumer-parent</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -28,17 +29,5 @@
             <version>5.1</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
-    </build>
 
 </project>
