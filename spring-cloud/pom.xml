@@ -19,6 +19,11 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>spring-boot-starter-consumer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
