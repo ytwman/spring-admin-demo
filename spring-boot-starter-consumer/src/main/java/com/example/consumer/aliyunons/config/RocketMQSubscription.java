@@ -41,12 +41,12 @@ public class RocketMQSubscription implements ApplicationContextAware {
         for (Object bean : beans.values()) {
             if (bean instanceof MessageListener) {
                 // 获取 message listener
-                MessageListener listener = (MessageListener) bean;
+                final MessageListener listener = (MessageListener) bean;
                 Consumer consumer = listener.getClass().getAnnotation(Consumer.class);
                 Assert.notNull(consumer, String.format("message listener: {}, not consumer specified.", listener.getClass().getName()));
 
                 // 获取泛型上的 topic 注解
-                Class<?> eventClass = GenericTypeResolver.resolveTypeArgument(listener.getClass(), MessageListener.class);
+                final Class<?> eventClass = GenericTypeResolver.resolveTypeArgument(listener.getClass(), MessageListener.class);
                 Topic topic = eventClass.getClass().getAnnotation(Topic.class);
                 Assert.notNull(topic, String.format("message listener: {}, not topic specified.", listener.getClass().getName()));
 

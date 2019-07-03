@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<modules>
-		<module>spring-admin-client</module>
+		<!--<module>spring-admin-client</module>
 		<module>spring-admin-server</module>
 		<module>spring-admin-eureka</module>
         <module>spring-cache-manager</module>
-		<module>spring-cloud</module>
-		<module>consumer-parent</module>
+		<module>spring-cloud</module>-->
+		<module>spring-boot-starter-consumer</module>
 		<module>provider-parent</module>
 	</modules>
 	<parent>
@@ -94,6 +94,13 @@
 				<artifactId>feign-httpclient</artifactId>
 				<version>9.5.1</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>1.1.18</version>
+			</dependency>
+
 
 			<!-- tools -->
 			<dependency>

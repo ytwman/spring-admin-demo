@@ -19,11 +19,6 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>consumer-parent</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
