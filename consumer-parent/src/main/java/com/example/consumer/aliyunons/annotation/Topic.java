@@ -1,4 +1,4 @@
-package com.example.consumer.annotation;
+package com.example.consumer.aliyunons.annotation;
 
 import java.lang.annotation.*;
 

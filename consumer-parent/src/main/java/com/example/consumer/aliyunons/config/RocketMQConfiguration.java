@@ -1,4 +1,4 @@
-package com.example.consumer.config;
+package com.example.consumer.aliyunons.config;
 
 import com.aliyun.openservices.ons.api.*;
 import com.aliyun.openservices.ons.api.MessageListener;

@@ -1,4 +1,4 @@
-package com.example.consumer.annotation;
+package com.example.consumer.aliyunons.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;

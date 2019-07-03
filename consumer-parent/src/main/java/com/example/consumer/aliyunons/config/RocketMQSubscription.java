@@ -1,13 +1,13 @@
-package com.example.consumer.config;
+package com.example.consumer.aliyunons.config;
 
 import com.alibaba.fastjson.JSON;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.common.filter.ExpressionType;
-import com.example.consumer.annotation.Consumer;
-import com.example.consumer.annotation.Topic;
-import com.example.consumer.listener.MessageEvent;
-import com.example.consumer.listener.MessageListener;
+import com.example.consumer.aliyunons.annotation.Consumer;
+import com.example.consumer.aliyunons.annotation.Topic;
+import com.example.consumer.aliyunons.listener.MessageEvent;
+import com.example.consumer.aliyunons.listener.MessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

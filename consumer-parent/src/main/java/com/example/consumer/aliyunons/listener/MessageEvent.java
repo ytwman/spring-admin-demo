@@ -1,4 +1,4 @@
-package com.example.consumer.listener;
+package com.example.consumer.aliyunons.listener;
 
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;

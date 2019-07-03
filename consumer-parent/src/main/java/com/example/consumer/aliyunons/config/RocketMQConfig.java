@@ -1,4 +1,4 @@
-package com.example.consumer.config;
+package com.example.consumer.aliyunons.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
