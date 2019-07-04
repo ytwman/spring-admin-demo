@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -56,14 +57,22 @@ public class MessageEventPublisher {
      * @return 发送结果
      */
     public static <E extends MessageEvent> SendResult publishEvent(final E event, String tags, final String shardingKey) {
-        return messageEventPublisher.getOrderProducer().send(buildMessage(event, tags), shardingKey);
+        return messageEventPublisher.getOrderProducer().send(buildMessage(event, tags, null), shardingKey);
+    }
+
+    public static <E extends MessageEvent> SendResult publishEvent(E event) {
+        return publishEvent(event, null);
     }
 
     public static <E extends MessageEvent> SendResult publishEvent(E event, String tags) {
-        return messageEventPublisher.getProducer().send(buildMessage(event, tags));
+        return messageEventPublisher.getProducer().send(buildMessage(event, tags, null));
     }
 
-    private static <E extends MessageEvent> Message buildMessage(final E event, String tags) {
+    public static <E extends MessageEvent> SendResult publishEvent(E event, String tags, Duration duration) {
+        return messageEventPublisher.getProducer().send(buildMessage(event, tags, duration));
+    }
+
+    private static <E extends MessageEvent> Message buildMessage(final E event, String tags, Duration duration) {
         Topic topic = event.getClass().getAnnotation(Topic.class);
         Assert.notNull(topic, String.format("message event: {}, not topic specified.", event.getClass().getName()));
 
@@ -79,6 +88,9 @@ public class MessageEventPublisher {
         message.setTag(tags);
         message.setKey(event.getKey());
         message.setBody(JSON.toJSONString(event).getBytes());
+        if (Objects.nonNull(duration)) {
+            message.setStartDeliverTime(duration.toMillis());
+        }
 //        message.setStartDeliverTime();
 //        message.setBornTimestamp();
 
