@@ -54,7 +54,7 @@ public class ConsumerScannerRegistrar implements ApplicationContextAware {
                 com.aliyun.openservices.ons.api.MessageListener messageListener = (message, context) -> {
                     try {
                         log.info("message listener: {}, topic: {}, tag:{}, msgid: {}, bizid: {},  receiver content: {}",
-                                listener.getClass(), message.getTopic(), message.getTag(), message.getMsgID(), message.getKey(), message.getBody());
+                                listener.getClass(), message.getTopic(), message.getTag(), message.getMsgID(), message.getKey(), new String(message.getBody()));
                         MessageEvent messageEvent = JSON.parseObject(message.getBody(), eventClass);
                         messageEvent.setMessage(message);
                         listener.consume(messageEvent);
