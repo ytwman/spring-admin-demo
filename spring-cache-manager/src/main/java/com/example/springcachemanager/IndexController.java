@@ -21,4 +21,9 @@ public class IndexController {
     public String say(@PathVariable String name) {
         return helloService.sayHello(name);
     }
+    @GetMapping("/ordermessage/{status}")
+    public int ordermessage(@PathVariable int status) {
+        helloService.orderMessage(status);
+        return status;
+    }
 }

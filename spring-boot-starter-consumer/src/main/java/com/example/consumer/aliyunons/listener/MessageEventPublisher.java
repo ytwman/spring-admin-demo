@@ -6,6 +6,7 @@ import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.order.OrderProducer;
 import com.example.consumer.aliyunons.annotation.Topic;
+import com.example.consumer.aliyunons.config.ConsumerScannerRegistrar;
 import com.example.consumer.aliyunons.config.RocketMQClientConfigBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
@@ -85,7 +86,7 @@ public class MessageEventPublisher {
 
         Message message = new Message();
         message.setTopic(topicName);
-        message.setTag(tags);
+        message.setTag(ConsumerScannerRegistrar.toTag(tags));
         message.setKey(event.getKey());
         message.setBody(JSON.toJSONString(event).getBytes());
         if (Objects.nonNull(duration)) {

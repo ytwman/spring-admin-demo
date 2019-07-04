@@ -1,4 +1,4 @@
-package com.example.springcachemanager;
+package com.example.springcachemanager.messagelistener;
 
 import com.example.consumer.aliyunons.annotation.Topic;
 import com.example.consumer.aliyunons.listener.MessageEvent;

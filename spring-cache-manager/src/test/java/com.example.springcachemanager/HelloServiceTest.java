@@ -1,6 +1,7 @@
 package com.example.springcachemanager;
 
 import com.example.consumer.aliyunons.listener.MessageEventPublisher;
+import com.example.springcachemanager.messagelistener.OrderEvent;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

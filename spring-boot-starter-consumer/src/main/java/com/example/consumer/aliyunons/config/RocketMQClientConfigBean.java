@@ -44,7 +44,7 @@ public class RocketMQClientConfigBean {
     /**
      * 客户端参数
      */
-    private  Client client = new Client();
+    private Client client = new Client();
 
     // 配置日志
     static {

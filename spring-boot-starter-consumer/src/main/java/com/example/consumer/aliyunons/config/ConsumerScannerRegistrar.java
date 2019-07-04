@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import com.aliyun.openservices.shade.com.alibaba.rocketmq.common.filter.ExpressionType;
+import com.example.consumer.Env;
 import com.example.consumer.aliyunons.annotation.Consumer;
 import com.example.consumer.aliyunons.annotation.Topic;
 import com.example.consumer.aliyunons.listener.MessageEvent;
 import com.example.consumer.aliyunons.listener.MessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.boot.logging.LoggingSystemProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
@@ -82,7 +84,14 @@ public class ConsumerScannerRegistrar implements ApplicationContextAware {
         Subscription subscription = new Subscription();
         subscription.setTopic(topic);
         subscription.setType(ExpressionType.TAG);
-        subscription.setExpression(consumer.value().equals("*") ? consumer.tag() : consumer.value());
+
+        String tag = consumer.value().equals("*") ? consumer.tag() : consumer.value();
+        subscription.setExpression(toTag(tag));
         return subscription;
+    }
+
+    public static String toTag(String tag) {
+        String pid = System.getProperty(LoggingSystemProperties.PID_KEY);
+        return Env.hasLocalEnv() && Objects.nonNull(pid) ? pid.concat("-").concat(tag) : tag;
     }
 }
