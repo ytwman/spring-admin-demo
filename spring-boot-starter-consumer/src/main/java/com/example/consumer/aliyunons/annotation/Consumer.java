@@ -17,7 +17,7 @@ public @interface Consumer {
      * tag 默认不过滤
      */
     @AliasFor("tag")
-    String value() default "";
+    String value() default "*";
 
     @AliasFor("value")
     String tag() default "*";

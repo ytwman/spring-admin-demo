@@ -49,6 +49,7 @@ public class RocketMQClientConfigBean {
     // 配置日志
     static {
         System.setProperty(ClientLogger.CLIENT_LOG_USESLF4J, "true");
+        System.setProperty(ClientLogger.CLIENT_LOG_LEVEL, "WARN");
     }
 
     public String getNamesrvAddr() {
