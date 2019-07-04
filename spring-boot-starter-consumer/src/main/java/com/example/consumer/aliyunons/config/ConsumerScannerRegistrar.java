@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Configuration
-public class RocketMQSubscription implements ApplicationContextAware {
+public class ConsumerScannerRegistrar implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
@@ -67,8 +67,8 @@ public class RocketMQSubscription implements ApplicationContextAware {
 
                 // 拼装环境区分后缀
                 String topicName = Objects.nonNull(config.getTopicSuffix())
-                        ? topic.value().join(config.getTopicSuffix())
-                        : (Objects.nonNull(config.getEnvSuffix()) ? topic.value().join(config.getEnvSuffix()) : topic.value());
+                        ? topic.value().concat(config.getTopicSuffix())
+                        : (Objects.nonNull(config.getEnvSuffix()) ? topic.value().concat(config.getEnvSuffix()) : topic.value());
 
                 subscriptions.put(asSubscription(consumer, topicName), messageListener);
                 log.info("message listener: {}, subscription topic: {}, tag: {}.", listener.getClass().getName(), topic.value(), consumer.tag());

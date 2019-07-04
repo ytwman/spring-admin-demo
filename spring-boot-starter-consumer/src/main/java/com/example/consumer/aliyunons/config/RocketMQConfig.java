@@ -37,9 +37,14 @@ public class RocketMQConfig {
     private String envSuffix;
 
     /**
+     * 是否开启 mq
+     */
+    private String enabled = Boolean.TRUE.toString();
+
+    /**
      * 客户端参数
      */
-    private Client client;
+    private Client client = new Client();
 
     // 配置日志
     static {

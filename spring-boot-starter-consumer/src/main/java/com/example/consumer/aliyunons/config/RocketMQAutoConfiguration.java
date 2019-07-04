@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.util.Map;
 import java.util.Objects;
@@ -20,8 +21,9 @@ import java.util.Properties;
 @Slf4j
 @Configuration
 @ConditionalOnProperty(value = "spring.rocketmq.enabled", havingValue = "true")
+@Import(ConsumerScannerRegistrar.class)
 @EnableConfigurationProperties(RocketMQConfig.class)
-public class RocketMQConfiguration {
+public class RocketMQAutoConfiguration {
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
     public Producer getProducer(RocketMQConfig config) {
@@ -37,7 +39,7 @@ public class RocketMQConfiguration {
         return producerBean;
     }
 
-//    @Bean(initMethod = "start", destroyMethod = "shutdown")
+    //    @Bean(initMethod = "start", destroyMethod = "shutdown")
     public TransactionProducer getTransactionProducer(RocketMQConfig config) {
         TransactionProducerBean producerBean = new TransactionProducerBean();
         producerBean.setProperties(asProperties(config));
@@ -47,24 +49,28 @@ public class RocketMQConfiguration {
     }
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
-    public Consumer getConsumer(RocketMQConfig config, RocketMQSubscription subscription) {
+    public Consumer getConsumer(RocketMQConfig config, ConsumerScannerRegistrar registrar) {
         ConsumerBean bean = new ConsumerBean();
         bean.setProperties(asProperties(config));
         // 指定客户端的 groupid, 拼装环境区分后缀
+        String gid = config.getClient().getGroupId();
+        Objects.requireNonNull(gid, "spring.rocketmq.client.group-id 不能为空");
         String groupId = Objects.nonNull(config.getGroupSuffix())
-                ? config.getClient().getGroupId().join(config.getGroupSuffix())
-                : (Objects.nonNull(config.getEnvSuffix())
-                    ? config.getClient().getGroupId().join(config.getEnvSuffix()) : config.getClient().getGroupId());
+                ? gid.concat(config.getGroupSuffix())
+                : (Objects.nonNull(config.getEnvSuffix()) ? gid.concat(config.getEnvSuffix()) : config.getClient().getGroupId());
         bean.getProperties().putIfAbsent(PropertyKeyConst.GROUP_ID, groupId);
 
         if (config.getClient().getConsumeThreadNums() != null) {
             bean.getProperties().putIfAbsent(PropertyKeyConst.ConsumeThreadNums, config.getClient().getConsumeThreadNums());
         }
-        Map<Subscription, MessageListener> subscriptionTable = subscription.getSubscriptionTable(config);
-        if (!subscriptionTable.isEmpty()) {
+        Map<Subscription, MessageListener> subscriptionTable = registrar.getSubscriptionTable(config);
+        if (subscriptionTable.isEmpty()) {
             log.warn("client GroupId:{}, not found message listener.", config.getClient().getGroupId());
-            bean.setSubscriptionTable(subscriptionTable);
+            return null;
         }
+
+        bean.setSubscriptionTable(subscriptionTable);
+
         return bean;
     }
 

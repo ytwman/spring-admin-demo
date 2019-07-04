@@ -8,9 +8,22 @@ import com.aliyun.openservices.ons.api.Message;
  */
 public class MessageEvent {
 
+    /**
+     * 业务主键
+     */
+    private String key;
+
     private Message message;
 
     private ConsumeContext consumeContext;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public Message getMessage() {
         return message;
