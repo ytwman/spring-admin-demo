@@ -4,6 +4,7 @@ import com.aliyun.openservices.ons.api.*;
 import com.aliyun.openservices.ons.api.bean.*;
 import com.aliyun.openservices.ons.api.order.OrderProducer;
 import com.aliyun.openservices.ons.api.transaction.TransactionProducer;
+import com.example.consumer.aliyunons.listener.MessageEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +21,7 @@ import java.util.Properties;
 @Slf4j
 @Configuration
 //@ConditionalOnProperty(value = "spring.rocketmq.enabled", havingValue = "true")
-@Import(ConsumerScannerRegistrar.class)
+@Import({ConsumerScannerRegistrar.class, MessageEventPublisher.class})
 @EnableConfigurationProperties(RocketMQClientConfigBean.class)
 public class RocketMQClientAutoConfiguration {
 

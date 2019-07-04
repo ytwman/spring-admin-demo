@@ -8,7 +8,7 @@ import lombok.ToString;
  * @author hank (hank@meiyibao.com)
  */
 @ToString
-@Topic("OrderEvent")
+@Topic("TID_SHOP")
 public class OrderEvent extends MessageEvent {
     private Long orderId;
 

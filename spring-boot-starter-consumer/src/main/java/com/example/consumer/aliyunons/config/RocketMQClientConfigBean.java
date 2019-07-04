@@ -50,6 +50,7 @@ public class RocketMQClientConfigBean {
     static {
         System.setProperty(ClientLogger.CLIENT_LOG_USESLF4J, "true");
         System.setProperty(ClientLogger.CLIENT_LOG_LEVEL, "WARN");
+        System.setProperty("ons.client.logLevel", "WARN");
     }
 
     public String getNamesrvAddr() {

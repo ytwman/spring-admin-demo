@@ -48,7 +48,7 @@ public class ConsumerScannerRegistrar implements ApplicationContextAware {
 
                 // 获取泛型上的 topic 注解
                 final Class<?> eventClass = GenericTypeResolver.resolveTypeArgument(listener.getClass(), MessageListener.class);
-                Topic topic = eventClass.getClass().getAnnotation(Topic.class);
+                Topic topic = eventClass.getAnnotation(Topic.class);
                 Assert.notNull(topic, String.format("message listener: {}, not topic specified.", listener.getClass().getName()));
 
                 com.aliyun.openservices.ons.api.MessageListener messageListener = (message, context) -> {
@@ -81,9 +81,8 @@ public class ConsumerScannerRegistrar implements ApplicationContextAware {
     private Subscription asSubscription(Consumer consumer, String topic) {
         Subscription subscription = new Subscription();
         subscription.setTopic(topic);
-        subscription.setTopic(consumer.value().isEmpty() ? consumer.tag() : consumer.value());
         subscription.setType(ExpressionType.TAG);
-        subscription.setExpression("*");
+        subscription.setExpression(consumer.value().equals("*") ? consumer.tag() : consumer.value());
         return subscription;
     }
 }
