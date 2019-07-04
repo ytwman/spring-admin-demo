@@ -6,7 +6,7 @@ import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.order.OrderProducer;
 import com.example.consumer.aliyunons.annotation.Topic;
-import com.example.consumer.aliyunons.config.RocketMQConfig;
+import com.example.consumer.aliyunons.config.RocketMQClientConfigBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
@@ -28,7 +28,7 @@ public class MessageEventPublisher {
     private OrderProducer orderProducer;
 
     @Resource
-    private RocketMQConfig config;
+    private RocketMQClientConfigBean config;
 
     private static MessageEventPublisher messageEventPublisher;
 
@@ -45,7 +45,7 @@ public class MessageEventPublisher {
         return orderProducer;
     }
 
-    public RocketMQConfig getConfig() {
+    public RocketMQClientConfigBean getConfig() {
         return config;
     }
 
@@ -76,7 +76,7 @@ public class MessageEventPublisher {
         Topic topic = event.getClass().getAnnotation(Topic.class);
         Assert.notNull(topic, String.format("message event: {}, not topic specified.", event.getClass().getName()));
 
-        RocketMQConfig config = messageEventPublisher.getConfig();
+        RocketMQClientConfigBean config = messageEventPublisher.getConfig();
 
         // 拼装环境区分后缀
         String topicName = Objects.nonNull(config.getTopicSuffix())

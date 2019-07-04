@@ -44,7 +44,7 @@ public class RocketMQClientConfigBean {
     /**
      * 客户端参数
      */
-    private Client client = new Client();
+    private  Client client = new Client();
 
     // 配置日志
     static {
@@ -103,11 +103,7 @@ public class RocketMQClientConfigBean {
         return client;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public class Client {
+    public static class Client {
         /**
          * 客户端 id
          */
