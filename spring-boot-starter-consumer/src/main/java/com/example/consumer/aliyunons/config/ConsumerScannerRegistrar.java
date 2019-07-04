@@ -34,7 +34,7 @@ public class ConsumerScannerRegistrar implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public Map<Subscription, com.aliyun.openservices.ons.api.MessageListener> getSubscriptionTable(RocketMQConfig config) {
+    public Map<Subscription, com.aliyun.openservices.ons.api.MessageListener> getSubscriptionTable(RocketMQClientConfigBean config) {
         Map<Subscription, com.aliyun.openservices.ons.api.MessageListener> subscriptions = new HashMap<>();
 
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(Consumer.class);

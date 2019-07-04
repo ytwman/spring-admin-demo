@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.example.consumer.aliyunons.config.RocketMQAutoConfiguration
+com.example.consumer.aliyunons.config.RocketMQClientAutoConfiguration

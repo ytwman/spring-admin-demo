@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author hank (hank@meiyibao.com)
  */
 @ConfigurationProperties("spring.rocketmq")
-public class RocketMQConfig {
+public class RocketMQClientConfigBean {
 
     private String namesrvAddr;
 

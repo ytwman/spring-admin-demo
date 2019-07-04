@@ -22,25 +22,25 @@ import java.util.Properties;
 @Configuration
 @ConditionalOnProperty(value = "spring.rocketmq.enabled", havingValue = "true")
 @Import(ConsumerScannerRegistrar.class)
-@EnableConfigurationProperties(RocketMQConfig.class)
-public class RocketMQAutoConfiguration {
+@EnableConfigurationProperties(RocketMQClientConfigBean.class)
+public class RocketMQClientAutoConfiguration {
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
-    public Producer getProducer(RocketMQConfig config) {
+    public Producer getProducer(RocketMQClientConfigBean config) {
         ProducerBean producerBean = new ProducerBean();
         producerBean.setProperties(asProperties(config));
         return producerBean;
     }
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
-    public OrderProducer getOrderProducer(RocketMQConfig config) {
+    public OrderProducer getOrderProducer(RocketMQClientConfigBean config) {
         OrderProducerBean producerBean = new OrderProducerBean();
         producerBean.setProperties(asProperties(config));
         return producerBean;
     }
 
     //    @Bean(initMethod = "start", destroyMethod = "shutdown")
-    public TransactionProducer getTransactionProducer(RocketMQConfig config) {
+    public TransactionProducer getTransactionProducer(RocketMQClientConfigBean config) {
         TransactionProducerBean producerBean = new TransactionProducerBean();
         producerBean.setProperties(asProperties(config));
 //        producerBean.setLocalTransactionChecker();
@@ -49,7 +49,7 @@ public class RocketMQAutoConfiguration {
     }
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
-    public Consumer getConsumer(RocketMQConfig config, ConsumerScannerRegistrar registrar) {
+    public Consumer getConsumer(RocketMQClientConfigBean config, ConsumerScannerRegistrar registrar) {
         ConsumerBean bean = new ConsumerBean();
         bean.setProperties(asProperties(config));
         // 指定客户端的 groupid, 拼装环境区分后缀
@@ -74,7 +74,7 @@ public class RocketMQAutoConfiguration {
         return bean;
     }
 
-    private Properties asProperties(RocketMQConfig config) {
+    private Properties asProperties(RocketMQClientConfigBean config) {
         Properties properties = new Properties();
         properties.put(PropertyKeyConst.SecretKey, config.getAccessKeySecret());
         properties.put(PropertyKeyConst.AccessKey, config.getAccessKeyId());
